@@ -1,7 +1,7 @@
 package ru.sbt.mipt.oop.event.handler;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import ru.sbt.mipt.oop.Door;
 import ru.sbt.mipt.oop.Room;
 import ru.sbt.mipt.oop.SmartHome;
@@ -34,7 +34,7 @@ public class HallDoorClosedTest extends SmartHomeTestComponent {
         // Close hall door, so all lights will be turned off
         eventProcessor.processEvent(new SensorEvent(SensorEventType.DOOR_CLOSED, hallRoomDoorId));
 
-        lights.forEach(light -> Assert.assertEquals(Boolean.FALSE, light.isOn()));
+        lights.forEach(light -> Assertions.assertEquals(Boolean.FALSE, light.isOn()));
     }
 
     @Test
@@ -57,7 +57,7 @@ public class HallDoorClosedTest extends SmartHomeTestComponent {
 
         List<Boolean> lightIsOnListAfter = getLightIsOnList(lights);
 
-        Assert.assertEquals(lightIsOnListBefore, lightIsOnListAfter);
+        Assertions.assertEquals(lightIsOnListBefore, lightIsOnListAfter);
     }
 
     private Door findHallRoomDoor() {

@@ -1,15 +1,12 @@
 package ru.sbt.mipt.oop.remote;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import ru.sbt.mipt.oop.Door;
 import ru.sbt.mipt.oop.Light;
 import ru.sbt.mipt.oop.Room;
 import ru.sbt.mipt.oop.SmartHome;
-import ru.sbt.mipt.oop.alarm.Alarm;
-import ru.sbt.mipt.oop.alarm.AlarmActiveState;
-import ru.sbt.mipt.oop.alarm.AlarmPanicState;
-import ru.sbt.mipt.oop.alarm.AlarmTest;
+import ru.sbt.mipt.oop.alarm.*;
 import ru.sbt.mipt.oop.event.processor.AlarmEventProcessorDecorator;
 import ru.sbt.mipt.oop.util.SmartHomeTestComponent;
 
@@ -52,7 +49,7 @@ public class RemoteControllerTest extends SmartHomeTestComponent {
 
         remoteController.onButtonPressed("A", "1");
 
-        lights.forEach(light -> Assert.assertTrue(light.isOn()));
+        lights.forEach(light -> Assertions.assertTrue(light.isOn()));
     }
 
     @Test
@@ -64,7 +61,7 @@ public class RemoteControllerTest extends SmartHomeTestComponent {
 
         remoteController.onButtonPressed("B", "1");
 
-        lights.forEach(light -> Assert.assertFalse(light.isOn()));
+        lights.forEach(light -> Assertions.assertFalse(light.isOn()));
     }
 
     @Test
@@ -74,7 +71,7 @@ public class RemoteControllerTest extends SmartHomeTestComponent {
         remoteController.onButtonPressed("C", "1");
 
         List<Light> lights = getLights(getHallRoom());
-        lights.forEach(light -> Assert.assertTrue(light.isOn()));
+        lights.forEach(light -> Assertions.assertTrue(light.isOn()));
 
         Room notHallRoom = rooms.stream()
                 .filter(room -> !room.getName().equals(hallRoomName))
@@ -83,7 +80,7 @@ public class RemoteControllerTest extends SmartHomeTestComponent {
         if (notHallRoom == null) return;
 
         lights = getLights(notHallRoom);
-        lights.forEach(light -> Assert.assertFalse(light.isOn()));
+        lights.forEach(light -> Assertions.assertFalse(light.isOn()));
     }
 
     @Test
@@ -95,8 +92,8 @@ public class RemoteControllerTest extends SmartHomeTestComponent {
 
         remoteController.onButtonPressed("A", "2");
 
-        lights.forEach(light -> Assert.assertFalse(light.isOn()));
-        Assert.assertFalse(hallRoomDoor.isOpen());
+        lights.forEach(light -> Assertions.assertFalse(light.isOn()));
+        Assertions.assertFalse(hallRoomDoor.isOpen());
     }
 
     @Test
@@ -122,15 +119,15 @@ public class RemoteControllerTest extends SmartHomeTestComponent {
     }
 
     private void checkActiveState() {
-        Assert.assertTrue(alarm.getState() instanceof AlarmActiveState);
+        Assertions.assertTrue(alarm.getState() instanceof AlarmActiveState);
     }
 
     private void checkInactiveState() {
-        Assert.assertTrue(alarm.getState() instanceof AlarmInactiveState);
+        Assertions.assertTrue(alarm.getState() instanceof AlarmInactiveState);
     }
 
     private void checkPanicState() {
-        Assert.assertTrue(alarm.getState() instanceof AlarmPanicState);
+        Assertions.assertTrue(alarm.getState() instanceof AlarmPanicState);
     }
 
 }

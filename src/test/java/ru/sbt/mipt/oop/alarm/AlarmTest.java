@@ -1,8 +1,8 @@
 package ru.sbt.mipt.oop.alarm;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import ru.sbt.mipt.oop.SmartHome;
 import ru.sbt.mipt.oop.SmartHomeSimulator;
 import ru.sbt.mipt.oop.event.AlarmEvent;
@@ -27,7 +27,7 @@ public class AlarmTest extends SmartHomeTestComponent {
         set(context.getBean(SmartHome.class), context.getBean(AlarmEventProcessorDecorator.class));
     }
 
-    @Before
+    @BeforeEach
     public void activateAlarm() {
         alarm.deactivate(correctCode);
         alarm.activate(correctCode);
@@ -103,17 +103,17 @@ public class AlarmTest extends SmartHomeTestComponent {
     }
 
     private void checkActiveState() {
-        Assert.assertTrue(alarm.getState() instanceof AlarmActiveState);
+        Assertions.assertTrue(alarm.getState() instanceof AlarmActiveState);
     }
 
     private void checkInactiveState() {
         System.out.println(alarm.getState().getClass().getName());
         System.out.println(alarm.getState() instanceof AlarmInactiveState);
-        Assert.assertTrue(alarm.getState() instanceof AlarmInactiveState);
+        Assertions.assertTrue(alarm.getState() instanceof AlarmInactiveState);
     }
 
     private void checkPanicState() {
-        Assert.assertTrue(alarm.getState() instanceof AlarmPanicState);
+        Assertions.assertTrue(alarm.getState() instanceof AlarmPanicState);
     }
 
 }

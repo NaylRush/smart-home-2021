@@ -1,6 +1,6 @@
 package ru.sbt.mipt.oop.util;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import ru.sbt.mipt.oop.*;
@@ -104,11 +104,11 @@ public class SmartHomeTestComponent {
         List<Boolean> doorIsOpenListAfter = getDoorIsOpenList(doors);
         List<Boolean> lightIsOnListAfter = getLightIsOnList(lights);
 
-        Assert.assertEquals(doorIsOpenListBefore.size(), doorIsOpenListAfter.size());
-        Assert.assertArrayEquals(doorIsOpenListBefore.toArray(), doorIsOpenListAfter.toArray());
+        Assertions.assertEquals(doorIsOpenListBefore.size(), doorIsOpenListAfter.size());
+        Assertions.assertArrayEquals(doorIsOpenListBefore.toArray(), doorIsOpenListAfter.toArray());
 
-        Assert.assertEquals(lightIsOnListBefore.size(), lightIsOnListAfter.size());
-        Assert.assertArrayEquals(lightIsOnListBefore.toArray(), lightIsOnListAfter.toArray());
+        Assertions.assertEquals(lightIsOnListBefore.size(), lightIsOnListAfter.size());
+        Assertions.assertArrayEquals(lightIsOnListBefore.toArray(), lightIsOnListAfter.toArray());
     }
 
 }

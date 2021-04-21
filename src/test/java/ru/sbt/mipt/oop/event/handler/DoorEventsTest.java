@@ -1,7 +1,7 @@
 package ru.sbt.mipt.oop.event.handler;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import ru.sbt.mipt.oop.Door;
 import ru.sbt.mipt.oop.SmartHome;
 import ru.sbt.mipt.oop.event.SensorEvent;
@@ -48,7 +48,7 @@ public class DoorEventsTest extends SmartHomeTestComponent {
 
         Door door = getDoor(id);
         if (door != null) {
-            Assert.assertEquals(isOpenExpected, door.isOpen());
+            Assertions.assertEquals(isOpenExpected, door.isOpen());
         }
     }
 

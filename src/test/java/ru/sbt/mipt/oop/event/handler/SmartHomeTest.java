@@ -1,6 +1,6 @@
 package ru.sbt.mipt.oop.event.handler;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import ru.sbt.mipt.oop.SmartHome;
 import ru.sbt.mipt.oop.event.processor.SensorEventProcessor;
 import ru.sbt.mipt.oop.util.SmartHomeTestComponent;
