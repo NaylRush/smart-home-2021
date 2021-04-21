@@ -8,7 +8,7 @@
     <packaging>jar</packaging>
 
     <name>Maven Quick Start Archetype</name>
-    <url>http://maven.apache.org</url>
+    <url>https://maven.apache.org</url>
 
     <build>
         <plugins>
@@ -26,6 +26,11 @@
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.3.5</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
