@@ -1,9 +1,13 @@
-package ru.sbt.mipt.oop;
+package ru.sbt.mipt.oop.event.handler;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import ru.sbt.mipt.oop.Light;
+import ru.sbt.mipt.oop.SmartHome;
 import ru.sbt.mipt.oop.event.SensorEvent;
 import ru.sbt.mipt.oop.event.SensorEventType;
+import ru.sbt.mipt.oop.event.processor.SensorEventProcessor;
+import ru.sbt.mipt.oop.util.SmartHomeTestComponent;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,10 +15,7 @@ import java.util.stream.Collectors;
 public class LightEventsTest extends SmartHomeTestComponent {
 
     public LightEventsTest() {
-        super();
-
-        SmartHomeTest smartHomeTest = new SmartHomeTest();
-        set(smartHomeTest.getSmartHome(), smartHomeTest.getEventProcessor());
+        set(context.getBean(SmartHome.class), context.getBean(SensorEventProcessor.class));
     }
 
     @Test
@@ -47,7 +48,7 @@ public class LightEventsTest extends SmartHomeTestComponent {
 
         Light light = getLight(id);
         if (light != null) {
-            Assert.assertEquals(isOpenExpected, light.isOn());
+            Assertions.assertEquals(isOpenExpected, light.isOn());
         }
     }
 
