@@ -7,6 +7,7 @@ import ru.sbt.mipt.oop.alarm.Alarm;
 import ru.sbt.mipt.oop.alarm.AlarmActiveState;
 import ru.sbt.mipt.oop.alarm.AlarmPanicState;
 import ru.sbt.mipt.oop.remote.RemoteController;
+import ru.sbt.mipt.oop.remote.builder.RemoteControllerChainBuilder;
 import ru.sbt.mipt.oop.remote.command.*;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class RemoteControllerTest extends SmartHomeTestComponent {
     private final Alarm alarm = alarmTest.getAlarm();
     private final String correctCode = alarmTest.getCorrectCode();
 
-    private final RemoteController remoteController = new RemoteController();
+    private RemoteController remoteController;
 
     public RemoteControllerTest() {
         super();
@@ -27,17 +28,22 @@ public class RemoteControllerTest extends SmartHomeTestComponent {
 
     @Before
     public void addRemoteController() {
-        remoteController.bind("A", new TurnOnAllLightsCommand(smartHome));
+        RemoteControllerChainBuilder builder = new RemoteControllerChainBuilder();
+        builder.setRcId(null);
+
+        builder.bindButton("A", new TurnOnAllLightsCommand(smartHome));
 
         Door hallRoomDoor = findHallRoomDoor();
         if (hallRoomDoor != null) {
-            remoteController.bind("B", new CloseHallDoorCommand(smartHome, hallRoomDoor.getId()));
+            builder.bindButton("B", new CloseHallDoorCommand(smartHome, hallRoomDoor.getId()));
         }
 
-        remoteController.bind("C", new TurnOnHallLightsCommand(smartHome));
-        remoteController.bind("D", new ActivateAlarmCommand(alarm, correctCode));
-        remoteController.bind("1", new PanicAlarmCommand(alarm));
-        remoteController.bind("2", new TurnOffAllLightsCommand(smartHome));
+        builder.bindButton("C", new TurnOnHallLightsCommand(smartHome));
+        builder.bindButton("D", new ActivateAlarmCommand(alarm, correctCode));
+        builder.bindButton("1", new PanicAlarmCommand(alarm));
+        builder.bindButton("2", new TurnOffAllLightsCommand(smartHome));
+
+        remoteController = builder.getRemoteControl();
     }
 
     @Test
