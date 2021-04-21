@@ -17,42 +17,33 @@ import java.util.stream.Collectors;
 public class ApplicationConfiguration {
 
     @Bean
-    SmartHome getSmartHome() {
+    SmartHome smartHome() {
         SmartHomeReader smartHomeReader = new JsonSmartHomeReader("smart-home-1.json");
         return smartHomeReader.read();
     }
 
     @Bean
-    LightEventHandler getLightEventHandler() {
-        return new LightEventHandler(getSmartHome());
+    LightEventHandler lightEventHandler(SmartHome smartHome) {
+        return new LightEventHandler(smartHome);
     }
 
     @Bean
-    DoorEventHandler getDoorEventHandler() {
-        return new DoorEventHandler(getSmartHome());
+    DoorEventHandler getDoorEventHandler(SmartHome smartHome) {
+        return new DoorEventHandler(smartHome);
     }
 
     @Bean
-    HallDoorEventHandler getHallDoorEventHandler() {
-        return new HallDoorEventHandler(getSmartHome(), new TurnOffLightCommandProducer());
+    HallDoorEventHandler getHallDoorEventHandler(SmartHome smartHome) {
+        return new HallDoorEventHandler(smartHome, new TurnOffLightCommandProducer());
     }
 
     @Bean
-    List<EventHandler> getSensorEventHandlers() {
-        return Arrays.asList(
-                getLightEventHandler(),
-                getDoorEventHandler(),
-                getHallDoorEventHandler()
-        );
-    }
-
-    @Bean
-    List<com.coolcompany.smarthome.events.EventHandler> getAdaptedSensorEventHandlers(List<EventHandler> eventHandlers) {
+    List<com.coolcompany.smarthome.events.EventHandler> adaptedSensorEventHandlers(List<EventHandler> eventHandlers) {
         return eventHandlers.stream().map(SensorEventHandlerAdapter::new).collect(Collectors.toList());
     }
 
     @Bean
-    SensorEventsManager getSensorEventsManager(List<com.coolcompany.smarthome.events.EventHandler> eventHandlers) {
+    SensorEventsManager sensorEventsManager(List<com.coolcompany.smarthome.events.EventHandler> eventHandlers) {
         SensorEventsManager eventsManager = new SensorEventsManager();
         eventHandlers.forEach(eventsManager::registerEventHandler);
         return eventsManager;
