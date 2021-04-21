@@ -1,18 +1,27 @@
-package ru.sbt.mipt.oop;
+package ru.sbt.mipt.oop.util;
 
 import org.junit.Assert;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
+import ru.sbt.mipt.oop.*;
 import ru.sbt.mipt.oop.actions.AllDoorsAction;
 import ru.sbt.mipt.oop.actions.AllLightsAction;
 import ru.sbt.mipt.oop.actions.AllRoomsAction;
 import ru.sbt.mipt.oop.event.processor.EventProcessor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class SmartHomeTestComponent {
 
+    static protected final AbstractApplicationContext context =
+            new AnnotationConfigApplicationContext(TestConfiguration.class);
+
     protected SmartHome smartHome = null;
     protected EventProcessor eventProcessor = null;
+
+    protected List<SmartHomeTestComponent> childTestComponents = new ArrayList<>();
 
     protected List<Door> doors = null;
     protected List<Light> lights = null;
@@ -20,22 +29,18 @@ public class SmartHomeTestComponent {
 
     protected final String hallRoomName = "hall";
 
-    public EventProcessor getEventProcessor() {
-        return eventProcessor;
-    }
-
-    public SmartHome getSmartHome() {
-        return smartHome;
-    }
-
     public void set(SmartHome smartHome, EventProcessor eventProcessor) {
         this.smartHome = smartHome;
         this.eventProcessor = eventProcessor;
 
         findAll();
+
+        for (SmartHomeTestComponent component : childTestComponents) {
+            component.set(smartHome, eventProcessor);
+        }
     }
 
-    public void findAll() {
+    protected void findAll() {
         rooms = getRooms(smartHome);
         doors = getDoors(smartHome);
         lights = getLights(smartHome);
