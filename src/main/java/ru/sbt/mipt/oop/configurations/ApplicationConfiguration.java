@@ -5,12 +5,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.sbt.mipt.oop.SmartHome;
 import ru.sbt.mipt.oop.command.TurnOffLightCommandProducer;
+import ru.sbt.mipt.oop.event.SensorEventAdapter;
+import ru.sbt.mipt.oop.event.SensorEventType;
 import ru.sbt.mipt.oop.event.handler.*;
 import ru.sbt.mipt.oop.io.JsonSmartHomeReader;
 import ru.sbt.mipt.oop.io.SmartHomeReader;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -38,8 +40,27 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    List<com.coolcompany.smarthome.events.EventHandler> adaptedSensorEventHandlers(List<EventHandler> eventHandlers) {
-        return eventHandlers.stream().map(SensorEventHandlerAdapter::new).collect(Collectors.toList());
+    Map<String, SensorEventType> transform() {
+        return Map.of(
+                "LightIsOn", SensorEventType.LIGHT_ON,
+                "LightIsOff", SensorEventType.LIGHT_OFF,
+                "DoorIsOpen", SensorEventType.DOOR_OPEN,
+                "DoorIsClosed", SensorEventType.DOOR_CLOSED
+        );
+    }
+
+    @Bean
+    SensorEventAdapter sensorEventAdapter(Map<String, SensorEventType> transform) {
+        return new SensorEventAdapter(transform);
+    }
+
+    @Bean
+    List<com.coolcompany.smarthome.events.EventHandler>
+    adaptedSensorEventHandlers(List<EventHandler> eventHandlers,
+                               SensorEventAdapter sensorEventAdapter) {
+        return eventHandlers.stream()
+                .map(eventHandler -> new SensorEventHandlerAdapter(eventHandler, sensorEventAdapter))
+                .collect(Collectors.toList());
     }
 
     @Bean
